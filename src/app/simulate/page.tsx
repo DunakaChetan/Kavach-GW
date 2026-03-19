@@ -56,22 +56,29 @@ export default function SimulatePage() {
 
         {/* Trigger Selector */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-6">
-          {triggers.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => { if (stage === "idle") setSelectedTrigger(t); }}
-              disabled={stage !== "idle"}
-              className={`card !rounded-xl p-3.5 text-left transition-all ${
-                selectedTrigger.id === t.id ? `!border-2 ${t.activeBorder}` : ""
-              } ${stage !== "idle" ? "opacity-50 cursor-not-allowed" : ""}`}
-            >
-              <div className={`w-8 h-8 rounded-lg ${t.iconBg} flex items-center justify-center mb-2`}>
-                <t.icon className={`w-4 h-4 ${t.iconColor}`} />
-              </div>
-              <h3 className="text-xs font-semibold text-text-primary">{t.name}</h3>
-              <p className="text-[10px] text-text-muted mt-0.5 leading-tight">{t.desc}</p>
-            </button>
-          ))}
+          {triggers.map((t) => {
+            const isSelected = selectedTrigger.id === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => { if (stage === "idle") setSelectedTrigger(t); }}
+                disabled={stage !== "idle"}
+                className={`card !rounded-xl p-3.5 text-left transition-all ${
+                  isSelected
+                    ? "!bg-primary !border-primary shadow-lg scale-[1.03]"
+                    : "hover:border-primary/30"
+                } ${stage !== "idle" ? "opacity-50 cursor-not-allowed" : ""}`}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2 ${
+                  isSelected ? "bg-white/20" : t.iconBg
+                }`}>
+                  <t.icon className={`w-4 h-4 ${isSelected ? "text-white" : t.iconColor}`} />
+                </div>
+                <h3 className={`text-xs font-semibold ${isSelected ? "text-white" : "text-text-primary"}`}>{t.name}</h3>
+                <p className={`text-[10px] mt-0.5 leading-tight ${isSelected ? "text-white/70" : "text-text-muted"}`}>{t.desc}</p>
+              </button>
+            );
+          })}
         </div>
 
         {/* Simulation Panel */}
